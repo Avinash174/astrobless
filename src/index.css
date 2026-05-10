@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary-bg: #0d1204;
+  --color-secondary-surface: #131d06;
+  --color-accent: #FD7D00;
+  --color-accent-hover: #ff8c1a;
+  --color-text-main: #FFFFFF;
+  --color-text-secondary: #a1a1aa;
+  --color-glass-border: rgba(255, 255, 255, 0.08);
+  --color-glass-bg: rgba(255, 255, 255, 0.03);
+
+  --radius-card: 1.25rem;
+  --radius-card-lg: 2rem;
+  --radius-button: 1rem;
+
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-glow: glow 2s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes glow {
+    0%, 100% { opacity: 0.3; filter: blur(40px); }
+    50% { opacity: 0.6; filter: blur(60px); }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-primary-bg text-text-main font-['Outfit'] selection:bg-accent/30 antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full hover:bg-white/20 transition-colors;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-card-lg shadow-[0_8px_32px_rgba(0,0,0,0.4)];
+  }
+  
+  .glass-card-sm {
+    @apply bg-white/[0.02] backdrop-blur-md border border-white/[0.05] rounded-card;
+  }
+  
+  .btn-accent {
+    @apply bg-accent hover:bg-accent-hover text-white font-bold py-3 px-8 rounded-button transition-all duration-300 active:scale-95 shadow-lg shadow-accent/20 hover:shadow-accent/40 flex items-center justify-center gap-2;
+  }
+
+  .btn-outline {
+    @apply border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold py-3 px-8 rounded-button transition-all duration-300 active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  .input-field {
+    @apply bg-white/[0.03] border border-white/10 rounded-button px-5 py-4 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent/40 text-white placeholder:text-gray-600 transition-all;
+  }
+
+  .nav-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-200;
+  }
+
+  .nav-link-active {
+    @apply bg-accent/10 text-accent border border-accent/20 shadow-[0_0_20px_rgba(253,125,0,0.1)];
+  }
+}
+
