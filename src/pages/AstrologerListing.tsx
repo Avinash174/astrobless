@@ -13,13 +13,13 @@ import {
   Crown,
   ChevronDown
 } from 'lucide-react';
-import { astrologers } from '../data/mockData';
+import { astrologers, consultationCategories } from '../data/mockData';
 import AstrologerCard from '../components/AstrologerCard';
 import Skeleton from '../components/Skeleton';
-import { Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 
-const LANGUAGES = ['All', 'Hindi', 'English', 'Marathi'];
-const SPECIALTIES = ['All', 'Vedic', 'Tarot', 'Palmistry', 'Numerology', 'Vastu'];
+const LANGUAGES = ['All', 'Hindi', 'English', 'Marathi', 'Bengali', 'Punjabi', 'Telugu', 'Tamil', 'Gujarati', 'Sanskrit', 'Odia', 'Kannada', 'French'];
+const SPECIALTIES = ['All', 'Vedic', 'Tarot', 'Palmistry', 'Numerology', 'Vastu', 'Nadi', 'K P Astrology', 'Lal Kitab', 'Gemology', 'Western'];
 
 const STATS = [
   { icon: Users, label: 'Masters Online', value: '1,200+' },
@@ -36,9 +36,11 @@ const SORT_OPTIONS = [
 ];
 
 const AstrologerListing: React.FC = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState('');
-  const [lang, setLang] = useState('All');
-  const [spec, setSpec] = useState('All');
+  const [lang, setLang] = useState(searchParams.get('lang') || 'All');
+  const [spec, setSpec] = useState(searchParams.get('specialty') || 'All');
+  const [concern, setConcern] = useState(searchParams.get('category') || 'All');
   const [sortBy, setSortBy] = useState('popularity');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,12 +49,22 @@ const AstrologerListing: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  // Sync state with URL
+  React.useEffect(() => {
+    const params: Record<string, string> = {};
+    if (lang !== 'All') params.lang = lang;
+    if (spec !== 'All') params.specialty = spec;
+    if (concern !== 'All') params.category = concern;
+    setSearchParams(params, { replace: true });
+  }, [lang, spec, concern, setSearchParams]);
+
   const filteredAndSorted = useMemo(() => {
     let result = astrologers.filter((a) => {
       const matchName = a.name.toLowerCase().includes(search.toLowerCase());
       const matchLang = lang === 'All' || a.languages.includes(lang);
       const matchSpec = spec === 'All' || a.specialties.includes(spec);
-      return matchName && matchLang && matchSpec;
+      const matchConcern = concern === 'All' || a.concerns.includes(concern);
+      return matchName && matchLang && matchSpec && matchConcern;
     });
 
     switch (sortBy) {
@@ -63,7 +75,7 @@ const AstrologerListing: React.FC = () => {
       default: result.sort((a, b) => b.reviewsCount - a.reviewsCount);
     }
     return result;
-  }, [search, lang, spec, sortBy]);
+  }, [search, lang, spec, concern, sortBy]);
 
   const featured = astrologers.filter(a => a.rating >= 4.9).slice(0, 3);
 
@@ -182,7 +194,7 @@ const AstrologerListing: React.FC = () => {
             <div className="w-px h-6 bg-white/5" />
 
             <div className="flex items-center gap-4 min-w-max">
-              <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Category</span>
+              <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Expertise</span>
               <div className="flex gap-2">
                 {SPECIALTIES.map((s) => (
                   <button
@@ -195,6 +207,37 @@ const AstrologerListing: React.FC = () => {
                     }`}
                   >
                     {s}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="w-px h-6 bg-white/5" />
+
+            <div className="flex items-center gap-4 min-w-max">
+              <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Concern</span>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setConcern('All')}
+                  className={`px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all border ${
+                    concern === 'All' 
+                      ? 'bg-accent/10 text-accent border-accent/20' 
+                      : 'text-gray-500 hover:text-white hover:bg-white/5 border-white/5'
+                  }`}
+                >
+                  All
+                </button>
+                {consultationCategories.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => setConcern(c.id)}
+                    className={`px-6 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all border ${
+                      concern === c.id 
+                        ? 'bg-accent/10 text-accent border-accent/20' 
+                        : 'text-gray-500 hover:text-white hover:bg-white/5 border-white/5'
+                    }`}
+                  >
+                    {c.name}
                   </button>
                 ))}
               </div>
@@ -220,9 +263,9 @@ const AstrologerListing: React.FC = () => {
             </div>
           </div>
 
-          {(lang !== 'All' || spec !== 'All' || search || sortBy !== 'popularity') && (
+          {(lang !== 'All' || spec !== 'All' || concern !== 'All' || search || sortBy !== 'popularity') && (
             <button
-              onClick={() => { setSearch(''); setLang('All'); setSpec('All'); setSortBy('popularity'); }}
+              onClick={() => { setSearch(''); setLang('All'); setSpec('All'); setConcern('All'); setSortBy('popularity'); }}
               className="px-8 py-5 rounded-2xl bg-white/5 text-gray-400 hover:text-rose-400 transition-colors flex items-center gap-3 group shrink-0 border border-white/5"
             >
               <X className="w-4 h-4 group-hover:rotate-90 transition-transform" />
@@ -275,7 +318,7 @@ const AstrologerListing: React.FC = () => {
             <h3 className="text-4xl font-black text-white mb-4 tracking-tighter">No Masters Found</h3>
             <p className="text-gray-500 font-medium max-w-sm mx-auto mb-12 text-lg">Our experts are currently out of reach for these specific filters. Try expanding your search.</p>
             <button
-              onClick={() => { setSearch(''); setLang('All'); setSpec('All'); setSortBy('popularity'); }}
+              onClick={() => { setSearch(''); setLang('All'); setSpec('All'); setConcern('All'); setSortBy('popularity'); }}
               className="btn-accent px-14 py-5 rounded-3xl text-xs uppercase tracking-[0.2em]"
             >
               Reset Discovery Engine

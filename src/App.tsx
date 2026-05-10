@@ -8,6 +8,7 @@ import AstrologerProfile from './pages/AstrologerProfile';
 import ChatPage from './pages/ChatPage';
 import LiveChatListing from './pages/LiveChatListing';
 import KundliPage from './pages/KundliPage';
+import MatchmakingPage from './pages/MatchmakingPage';
 import AIChatPage from './pages/AIChatPage';
 import UserProfile from './pages/UserProfile';
 import Horoscope from './pages/Horoscope';
@@ -74,6 +75,8 @@ const App: React.FC = () => {
                 <Route path="chat/:id" element={<ChatPage />} />
                 <Route path="chat" element={<LiveChatListing />} />
                 <Route path="kundli" element={<KundliPage />} />
+                <Route path="matching" element={<MatchmakingPage />} />
+                <Route path="matchmaking" element={<MatchmakingPage />} />
                 <Route path="ai-chat" element={<AIChatPage />} />
                 <Route path="profile" element={<UserProfile />} />
                 <Route path="horoscope" element={<Horoscope />} />
@@ -106,6 +109,7 @@ const App: React.FC = () => {
                 <Route path="history" element={<ComingSoon title="Consultation History" />} />
                 <Route path="refer" element={<ComingSoon title="Refer & Earn" />} />
                 <Route path="community" element={<ComingSoon title="Community" />} />
+                <Route path="*" element={<LandingPage />} />
               </Route>
             </Routes>
           </Router>

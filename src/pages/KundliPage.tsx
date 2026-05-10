@@ -22,13 +22,54 @@ const KundliPage: React.FC = () => {
     time: '',
     location: ''
   });
+  const [errors, setErrors] = useState<{name?: string, dob?: string, location?: string}>({});
   const [isGenerated, setIsGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [chartData, setChartData] = useState<{
+    ascendant: string,
+    sun: string,
+    moon: string,
+    nakshatra: string,
+    planets: Array<{name: string, deg: string}>
+  } | null>(null);
+
+  const validate = () => {
+    const newErrors: any = {};
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.dob) newErrors.dob = "Date of birth is required";
+    else if (new Date(formData.dob) > new Date()) newErrors.dob = "Date cannot be in the future";
+    if (!formData.location.trim()) newErrors.location = "Location is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const generateChart = () => {
+    // Deterministic chart based on input
+    const seed = formData.name.length + new Date(formData.dob).getDate();
+    const zodiacs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const nakshatras = ['Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashira', 'Ardra', 'Punarvasu', 'Pushya'];
+
+    return {
+      ascendant: zodiacs[seed % 12],
+      sun: zodiacs[(seed + 5) % 12],
+      moon: zodiacs[(seed + 2) % 12],
+      nakshatra: nakshatras[seed % 8],
+      planets: [
+        { name: 'Sun', deg: `${(seed * 7) % 30}°` },
+        { name: 'Moon', deg: `${(seed * 13) % 30}°` },
+        { name: 'Mars', deg: `${(seed * 3) % 30}°` },
+        { name: 'Jupiter', deg: `${(seed * 19) % 30}°` },
+      ]
+    };
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
+    
     setIsLoading(true);
     setTimeout(() => {
+      setChartData(generateChart());
       setIsLoading(false);
       setIsGenerated(true);
     }, 2500);

@@ -13,25 +13,15 @@ import {
   ChevronDown,
   CalendarDays
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-const HOROSCOPES = [
-  { sign: 'Aries', emoji: '♈', date: 'Mar 21 – Apr 19', color: 'from-rose-500/20 to-orange-500/10', message: 'Today is a great day to start new projects. Your energy is high — channel it into bold decisions.' },
-  { sign: 'Taurus', emoji: '♉', date: 'Apr 20 – May 20', color: 'from-emerald-500/20 to-teal-500/10', message: 'Focus on comfort and financial stability. A thoughtful investment could pay dividends soon.' },
-  { sign: 'Gemini', emoji: '♊', date: 'May 21 – Jun 20', color: 'from-amber-400/20 to-yellow-500/10', message: 'Communication shines — reach out to old friends. A meaningful conversation awaits you.' },
-  { sign: 'Cancer', emoji: '♋', date: 'Jun 21 – Jul 22', color: 'from-blue-400/20 to-indigo-500/10', message: 'Emotions run high today — nurture yourself and those around you. Family bonds strengthen.' },
-  { sign: 'Leo', emoji: '♌', date: 'Jul 23 – Aug 22', color: 'from-orange-400/20 to-amber-500/10', message: 'Your confidence attracts powerful opportunities. Step into the spotlight fearlessly today.' },
-  { sign: 'Virgo', emoji: '♍', date: 'Aug 23 – Sep 22', color: 'from-teal-400/20 to-emerald-500/10', message: "Attention to detail pays off at work. A project you've been refining is ready to shine." },
-  { sign: 'Libra', emoji: '♎', date: 'Sep 23 – Oct 22', color: 'from-pink-400/20 to-rose-500/10', message: 'Seek balance in relationships. A difficult conversation handled gracefully brings harmony.' },
-  { sign: 'Scorpio', emoji: '♏', date: 'Oct 23 – Nov 21', color: 'from-purple-500/20 to-violet-500/10', message: 'Intense focus brings real breakthroughs. Trust your instincts — they are sharper than usual.' },
-  { sign: 'Sagittarius', emoji: '♐', date: 'Nov 22 – Dec 21', color: 'from-indigo-400/20 to-sky-500/10', message: 'Adventure calls — plan a short journey or explore a new idea. Your optimism is infectious.' },
-  { sign: 'Capricorn', emoji: '♑', date: 'Dec 22 – Jan 19', color: 'from-slate-400/20 to-gray-500/10', message: 'Discipline leads to long-term gains. A mentor figure may offer valuable insight today.' },
-  { sign: 'Aquarius', emoji: '♒', date: 'Jan 20 – Feb 18', color: 'from-cyan-400/20 to-blue-500/10', message: 'Innovative ideas flow effortlessly. Collaborate with like-minded visionaries for the best results.' },
-  { sign: 'Pisces', emoji: '♓', date: 'Feb 19 – Mar 20', color: 'from-violet-400/20 to-purple-500/10', message: 'Creative projects feel natural today. Let your imagination roam freely — magic awaits.' },
-];
+import { useSearchParams, Link } from 'react-router-dom';
+import { HOROSCOPES } from '../data/mockData';
 
 const Horoscope: React.FC = () => {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const [selected, setSelected] = useState<string | null>(searchParams.get('sign') ? 
+    searchParams.get('sign')!.charAt(0).toUpperCase() + searchParams.get('sign')!.slice(1) : 
+    null
+  );
   const [timeframe, setTimeframe] = useState<'today' | 'tomorrow' | 'weekly'>('today');
 
   return (
@@ -73,7 +63,7 @@ const Horoscope: React.FC = () => {
 
       {/* ── Zodiac Grid ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {HOROSCOPES.map((h, i) => {
+        {HOROSCOPES.map((h, i: number) => {
           const isSelected = selected === h.sign;
           return (
             <motion.div
@@ -130,7 +120,7 @@ const Horoscope: React.FC = () => {
                         { icon: Heart, label: 'Love', val: '98%', color: 'text-rose-500' },
                         { icon: Coins, label: 'Wealth', val: '85%', color: 'text-amber-500' },
                         { icon: Briefcase, label: 'Career', val: '92%', color: 'text-blue-500' },
-                      ].map((stat) => (
+                      ].map((stat: any) => (
                         <div key={stat.label} className="p-3 bg-white/5 rounded-2xl border border-white/5 text-center">
                           <stat.icon className={`w-4 h-4 mx-auto mb-2 ${stat.color}`} />
                           <p className="text-[10px] font-black text-gray-500 uppercase tracking-tighter mb-1">{stat.label}</p>

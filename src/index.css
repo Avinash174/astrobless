@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary-bg: #0d1204;
-  --color-secondary-surface: #131d06;
+  --color-primary-bg: #192309;
+  --color-secondary-surface: #1F2E0A;
   --color-accent: #FD7D00;
   --color-accent-hover: #ff8c1a;
   --color-text-main: #FFFFFF;
-  --color-text-secondary: #a1a1aa;
+  --color-text-secondary: #F4F4F4;
   --color-glass-border: rgba(255, 255, 255, 0.08);
   --color-glass-bg: rgba(255, 255, 255, 0.03);
 
@@ -80,6 +80,10 @@
 
   .nav-link-active {
     @apply bg-accent/10 text-accent border border-accent/20 shadow-[0_0_20px_rgba(253,125,0,0.1)];
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
   }
 }
 
