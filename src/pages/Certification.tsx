@@ -2,11 +2,9 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   Award, 
-  ShieldCheck, 
   CheckCircle2, 
   Globe,
   ArrowRight,
-  Sparkles,
   Zap,
   Target,
   FileCheck

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Smartphone, 
   Moon, 
   Sun, 
   Globe, 
   Bell, 
   Shield, 
   RotateCcw, 
-  Info,
   ChevronRight,
   Monitor,
   Zap,
@@ -20,6 +18,22 @@ import {
 } from 'lucide-react';
 import Skeleton from '../components/Skeleton';
 
+interface SettingItem {
+  icon: any;
+  label: string;
+  desc: string;
+  custom?: React.ReactNode;
+  toggle?: boolean;
+  active?: boolean;
+  path?: string;
+  action?: string;
+}
+
+interface SettingSection {
+  title: string;
+  items: SettingItem[];
+}
+
 const AppSettings: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [activeTheme, setActiveTheme] = useState('system');
@@ -29,7 +43,7 @@ const AppSettings: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const sections = [
+  const sections: SettingSection[] = [
     {
       title: 'Appearance',
       items: [

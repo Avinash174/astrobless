@@ -4,8 +4,6 @@ import {
   User, 
   Bell, 
   Shield, 
-  Smartphone, 
-  Globe, 
   CreditCard,
   ChevronRight,
   LogOut,
