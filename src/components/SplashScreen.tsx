@@ -1,80 +1,87 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const SplashScreen: React.FC = () => {
+const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      finishLoading();
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, [finishLoading]);
+
   return (
+    <motion.div
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+      className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center overflow-hidden"
+    >
+      {/* Background Decorative Elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div 
+          animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 rounded-full blur-[120px]"
+        />
+      </div>
+
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Logo Container */}
         <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-          className="fixed inset-0 z-[9999] bg-primary-bg flex flex-col items-center justify-center overflow-hidden"
+          initial={{ scale: 0.5, opacity: 0, rotate: -10 }}
+          animate={{ scale: 1, opacity: 1, rotate: 0 }}
+          transition={{ 
+            type: "spring", 
+            stiffness: 100, 
+            damping: 15,
+            duration: 1 
+          }}
+          className="w-64 h-64 md:w-80 md:h-80 relative"
         >
-          {/* Animated Background Rings */}
-          <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-            <motion.div 
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1.5, opacity: 0.1 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
-              className="absolute w-[500px] h-[500px] border border-accent rounded-full"
-            />
-            <motion.div 
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1.2, opacity: 0.05 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeOut", delay: 0.5 }}
-              className="absolute w-[800px] h-[800px] border border-white rounded-full"
-            />
-          </div>
+          {/* Animated Glow Ring */}
+          <motion.div 
+            animate={{ rotate: 360 }}
+            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 border-2 border-dashed border-primary/30 rounded-full"
+          />
+          
+          <img 
+            src="/splash_logo.png" 
+            alt="AstroBless Logo" 
+            className="w-full h-full object-contain relative z-10 drop-shadow-2xl" 
+          />
+        </motion.div>
 
-          <div className="relative flex flex-col items-center">
-            {/* Logo Container */}
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0, y: 20 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
-              className="relative mb-8"
-            >
-              {/* Outer Glow */}
-              <div className="absolute inset-0 bg-accent rounded-full blur-[40px] opacity-20 animate-pulse" />
-              
-              {/* The Logo Image */}
-              <div className="relative w-32 h-32 md:w-40 h-40 flex items-center justify-center">
-                <img 
-                  src="/assets/logo.png" 
-                  alt="AstroBless Logo" 
-                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_20px_rgba(253,125,0,0.5)]"
-                />
-              </div>
-            </motion.div>
-
-            {/* Text Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="text-center"
-            >
-              <h1 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2">
-                Astro<span className="text-accent">Bless</span>
-              </h1>
-              <div className="h-1 w-24 bg-gradient-to-r from-transparent via-accent to-transparent mx-auto mb-4" />
-              <p className="text-gray-500 font-black uppercase tracking-[0.4em] text-[10px] md:text-xs">
-                Cosmic Guidance
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Loading Indicator */}
-          <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center">
-            <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
-              <motion.div 
-                initial={{ x: "-100%" }}
-                animate={{ x: "100%" }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                className="w-full h-full bg-accent shadow-[0_0_10px_#FD7D00]"
-              />
-            </div>
+        {/* Text Animation */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+          className="mt-8 text-center"
+        >
+          <h2 className="text-4xl md:text-5xl font-black text-secondary tracking-tighter font-display mb-2">
+            AstroBless
+          </h2>
+          <div className="flex items-center gap-3 justify-center">
+            <div className="h-px w-8 bg-primary/30"></div>
+            <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">
+              Guiding Your Destiny
+            </p>
+            <div className="h-px w-8 bg-primary/30"></div>
           </div>
         </motion.div>
+
+        {/* Loading Bar */}
+        <div className="mt-12 w-48 h-1 bg-light rounded-full overflow-hidden relative">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: "100%" }}
+            transition={{ duration: 2, ease: "easeInOut" }}
+            className="absolute top-0 left-0 h-full bg-primary"
+          />
+        </div>
+      </div>
+    </motion.div>
   );
 };
 

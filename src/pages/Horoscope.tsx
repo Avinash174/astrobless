@@ -1,201 +1,132 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Star, 
-  ArrowRight, 
-  Moon, 
-  Sparkles, 
-  Zap, 
-  Heart, 
-  Briefcase, 
-  Coins, 
-  Shield, 
-  ChevronDown,
-  CalendarDays
-} from 'lucide-react';
-import { useSearchParams, Link } from 'react-router-dom';
-import { HOROSCOPES } from '../data/mockData';
+import React from 'react';
+import { motion } from 'framer-motion';
+import { Moon, Star, Sun, Calendar, ArrowRight, Sparkles } from 'lucide-react';
 
-const Horoscope: React.FC = () => {
-  const [searchParams] = useSearchParams();
-  const [selected, setSelected] = useState<string | null>(searchParams.get('sign') ? 
-    searchParams.get('sign')!.charAt(0).toUpperCase() + searchParams.get('sign')!.slice(1) : 
-    null
-  );
-  const [timeframe, setTimeframe] = useState<'today' | 'tomorrow' | 'weekly'>('today');
+const Horoscope = () => {
+  const zodiacs = [
+    { name: 'Aries', date: 'Mar 21 - Apr 19', icon: '♈' },
+    { name: 'Taurus', date: 'Apr 20 - May 20', icon: '♉' },
+    { name: 'Gemini', date: 'May 21 - Jun 20', icon: '♊' },
+    { name: 'Cancer', date: 'Jun 21 - Jul 22', icon: '♋' },
+    { name: 'Leo', date: 'Jul 23 - Aug 22', icon: '♌' },
+    { name: 'Virgo', date: 'Aug 23 - Sep 22', icon: '♍' },
+    { name: 'Libra', date: 'Sep 23 - Oct 22', icon: '♎' },
+    { name: 'Scorpio', date: 'Oct 23 - Nov 21', icon: '♏' },
+    { name: 'Sagittarius', date: 'Nov 22 - Dec 21', icon: '♐' },
+    { name: 'Capricorn', date: 'Dec 22 - Jan 19', icon: '♑' },
+    { name: 'Aquarius', date: 'Jan 20 - Feb 18', icon: '♒' },
+    { name: 'Pisces', date: 'Feb 19 - Mar 20', icon: '♓' },
+  ];
 
   return (
-    <div className="pb-24 max-w-7xl mx-auto px-4 md:px-8 pt-8">
-      {/* ── Immersive Page Header ── */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-16 text-center"
-      >
-        <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/5 border border-accent/10 rounded-full mb-6">
-          <Sparkles className="w-4 h-4 text-accent" />
-          <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em]">Cosmic Insights</span>
+    <main className="bg-light min-h-screen pb-20">
+      {/* Hero Section */}
+      <section className="bg-secondary text-white py-24 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -ml-24 -mt-24"></div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 bg-white/10 px-6 py-2 rounded-full mb-8 backdrop-blur-sm border border-white/10"
+          >
+            <Sparkles size={18} className="text-primary" />
+            <span className="text-sm font-black uppercase tracking-widest">Daily Cosmic Insights</span>
+          </motion.div>
+          <h1 className="text-6xl md:text-8xl font-black mb-8">Daily Horoscope</h1>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            Discover what the stars have in store for you today. Personalized predictions for career, love, and health.
+          </p>
         </div>
-        <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
-          Celestial <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-orange-500">Forecasting</span>
-        </h1>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">
-          Navigate your path with precision using daily planetary alignments and zodiac wisdom.
-        </p>
+      </section>
 
-        {/* Timeframe Tabs */}
-        <div className="flex items-center justify-center gap-2 mt-12 p-1.5 bg-white/5 border border-white/5 rounded-2xl w-fit mx-auto backdrop-blur-xl">
-          {['today', 'tomorrow', 'weekly'].map((t) => (
-            <button
-              key={t}
-              onClick={() => setTimeframe(t as any)}
-              className={`px-8 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
-                timeframe === t 
-                  ? 'bg-accent text-white shadow-lg shadow-accent/20' 
-                  : 'text-gray-500 hover:text-white hover:bg-white/5'
-              }`}
+      {/* Tabs / Filters */}
+      <section className="max-w-4xl mx-auto px-4 -mt-10 relative z-20">
+        <div className="bg-white rounded-3xl p-3 flex gap-2 shadow-2xl shadow-secondary/10 border border-gray-50">
+          {['Daily', 'Weekly', 'Monthly', 'Yearly 2026'].map((tab, i) => (
+            <button 
+              key={tab}
+              className={`flex-1 py-4 rounded-2xl font-black text-sm uppercase tracking-wider transition-all ${i === 0 ? 'bg-secondary text-white shadow-lg' : 'text-secondary/60 hover:bg-light'}`}
             >
-              {t}
+              {tab}
             </button>
           ))}
         </div>
-      </motion.div>
+      </section>
 
-      {/* ── Zodiac Grid ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {HOROSCOPES.map((h, i: number) => {
-          const isSelected = selected === h.sign;
-          return (
+      {/* Zodiac Grid */}
+      <section className="max-w-7xl mx-auto px-4 py-20">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {zodiacs.map((sign, i) => (
             <motion.div
-              key={h.sign}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
+              key={sign.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
-              layout
-              onClick={() => setSelected(isSelected ? null : h.sign)}
-              className={`group relative cursor-pointer glass-card p-6 transition-all duration-500 ${
-                isSelected 
-                  ? 'lg:col-span-2 lg:row-span-1 border-accent/40 bg-accent/[0.03]' 
-                  : 'hover:border-white/20 hover:bg-white/[0.04]'
-              }`}
+              whileHover={{ y: -10, scale: 1.02 }}
+              className="bg-white p-8 rounded-[3rem] premium-shadow border-2 border-transparent hover:border-primary transition-all cursor-pointer group text-center"
             >
-              {/* Background Glow for Selected */}
-              {isSelected && (
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent rounded-[32px] pointer-events-none" />
-              )}
-
-              <div className="flex items-start justify-between relative z-10">
-                <div className="flex gap-4">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${h.color} flex items-center justify-center text-3xl border border-white/10 group-hover:scale-110 transition-transform shadow-2xl`}>
-                    {h.emoji}
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-black text-white">{h.sign}</h2>
-                    <p className="text-[11px] text-gray-500 font-bold uppercase tracking-wider">{h.date}</p>
-                  </div>
-                </div>
-                {isSelected && (
-                  <motion.div initial={{ rotate: -90 }} animate={{ rotate: 0 }}>
-                    <Star className="w-5 h-5 text-accent fill-accent" />
-                  </motion.div>
-                )}
-              </div>
-
-              {/* Collapsed/Expanded Content */}
-              <AnimatePresence mode="wait">
-                {isSelected ? (
-                  <motion.div
-                    key="expanded"
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="mt-8 pt-8 border-t border-white/5 space-y-6"
-                  >
-                    <p className="text-gray-300 text-lg leading-relaxed font-medium italic">
-                      "{h.message}"
-                    </p>
-
-                    <div className="grid grid-cols-3 gap-4">
-                      {[
-                        { icon: Heart, label: 'Love', val: '98%', color: 'text-rose-500' },
-                        { icon: Coins, label: 'Wealth', val: '85%', color: 'text-amber-500' },
-                        { icon: Briefcase, label: 'Career', val: '92%', color: 'text-blue-500' },
-                      ].map((stat: any) => (
-                        <div key={stat.label} className="p-3 bg-white/5 rounded-2xl border border-white/5 text-center">
-                          <stat.icon className={`w-4 h-4 mx-auto mb-2 ${stat.color}`} />
-                          <p className="text-[10px] font-black text-gray-500 uppercase tracking-tighter mb-1">{stat.label}</p>
-                          <p className="text-sm font-black text-white">{stat.val}</p>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Zap className="w-4 h-4 text-accent" />
-                        <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Lucky No: 7</span>
-                      </div>
-                      <button className="flex items-center gap-2 text-[10px] font-black text-accent uppercase tracking-widest group/btn">
-                        Get Personal Report <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </button>
-                    </div>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="collapsed"
-                    className="mt-6 flex items-center justify-between text-gray-600 group-hover:text-gray-400 transition-colors"
-                  >
-                    <span className="text-[10px] font-black uppercase tracking-widest">View Reading</span>
-                    <ChevronDown className="w-4 h-4 group-hover:translate-y-1 transition-transform" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div className="text-6xl mb-6 group-hover:scale-110 transition-transform">{sign.icon}</div>
+              <h3 className="text-2xl font-black text-secondary mb-2">{sign.name}</h3>
+              <p className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-6">{sign.date}</p>
+              <button className="w-full py-4 rounded-2xl bg-light text-secondary font-black text-sm group-hover:bg-primary transition-colors flex items-center justify-center gap-2">
+                Read Prediction
+                <ArrowRight size={16} />
+              </button>
             </motion.div>
-          );
-        })}
-      </div>
-
-      {/* ── Detailed Insights Footer ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8"
-      >
-        <div className="glass-card p-10 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform">
-            <Moon className="w-32 h-32" />
-          </div>
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center">
-              <CalendarDays className="w-6 h-6 text-accent" />
-            </div>
-            <h3 className="text-2xl font-black text-white">Monthly Outlook</h3>
-          </div>
-          <p className="text-gray-400 font-medium leading-relaxed mb-8">
-            The transition of Jupiter into Gemini this month brings a significant shift in global communication and learning patterns.
-          </p>
-          <button className="btn-outline w-fit px-8 py-3 rounded-2xl">Read Full Analysis</button>
+          ))}
         </div>
+      </section>
 
-        <div className="glass-card p-10 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 transition-transform">
-            <Shield className="w-32 h-32" />
-          </div>
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-emerald-500" />
+      {/* Featured Insights */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="bg-white rounded-[4rem] p-12 md:p-20 flex flex-col md:flex-row gap-16 items-center premium-shadow overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+          
+          <div className="flex-1 space-y-8">
+            <h2 className="text-5xl font-black text-secondary leading-tight">Your Weekly <br /><span className="text-accent">Cosmic Summary</span></h2>
+            <p className="text-gray-500 text-lg leading-relaxed">
+              This week, the planetary alignment suggests a major shift in your professional life. Focus on networking and clear communication to unlock new opportunities.
+            </p>
+            <div className="flex flex-wrap gap-8">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-secondary">
+                  <Star size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase">Lucky Number</p>
+                  <p className="text-xl font-black text-secondary">07</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-accent/10 rounded-2xl flex items-center justify-center text-accent">
+                  <Sun size={24} />
+                </div>
+                <div>
+                  <p className="text-[10px] text-gray-400 font-bold uppercase">Lucky Color</p>
+                  <p className="text-xl font-black text-secondary">Indigo</p>
+                </div>
+              </div>
             </div>
-            <h3 className="text-2xl font-black text-white">Expert Guidance</h3>
           </div>
-          <p className="text-gray-400 font-medium leading-relaxed mb-8">
-            General readings provide a map, but a personal reading provides the destination. Connect with our Vedic masters.
-          </p>
-          <Link to="/astrologers">
-            <button className="btn-accent w-fit px-8 py-3 rounded-2xl">Consult an Expert</button>
-          </Link>
+
+          <div className="flex-1 w-full max-w-sm">
+            <div className="bg-light rounded-[3rem] p-8 border-2 border-primary/20 relative">
+              <div className="absolute -top-6 -left-6 w-20 h-20 bg-secondary rounded-full flex items-center justify-center shadow-xl">
+                <Moon size={32} className="text-white" />
+              </div>
+              <h4 className="text-2xl font-black text-secondary mb-4 mt-4">Love & Harmony</h4>
+              <p className="text-gray-400 font-medium mb-6 italic leading-relaxed">
+                "Venus enters your seventh house on Friday, bringing a wave of romantic energy. Perfect time for deep conversations."
+              </p>
+              <div className="flex gap-1 text-primary">
+                {[1, 2, 3, 4, 5].map(s => <Star key={s} size={16} fill="currentColor" />)}
+              </div>
+            </div>
+          </div>
         </div>
-      </motion.div>
-    </div>
+      </section>
+    </main>
   );
 };
 

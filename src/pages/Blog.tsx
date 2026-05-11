@@ -1,154 +1,158 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Calendar, 
-  ArrowRight,
-  Sparkles,
-  Search,
-  Bookmark
-} from 'lucide-react';
-import Skeleton from '../components/Skeleton';
+import { BookOpen, Search, ArrowRight, Calendar, User, Tag } from 'lucide-react';
 
-const Blog: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
+const Blog = () => {
   const posts = [
     {
-      title: 'Mercury Retrograde: Survival Guide for 2026',
-      excerpt: 'Learn how to navigate communication breakdowns and technological glitches during this intense transit.',
-      author: 'Astro Rhea',
-      date: 'May 12, 2026',
-      category: 'Transits',
-      image: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=600'
-    },
-    {
-      title: 'The Hidden Power of your Moon Sign',
-      excerpt: 'Discover your emotional blueprint and how your moon sign influences your daily reactions and relationships.',
-      author: 'Master Leo',
+      title: 'How Mercury Retrograde Affects Your Career in 2026',
+      category: 'Astrology',
       date: 'May 10, 2026',
-      category: 'Insights',
-      image: 'https://images.unsplash.com/photo-1532667449560-72a95c8d381b?auto=format&fit=crop&q=80&w=600'
+      author: 'Dr. Aditya Sharma',
+      image: 'https://images.unsplash.com/photo-1532968961962-8a0cb3a2d4f5?auto=format&fit=crop&q=80&w=800'
     },
     {
-      title: 'How AI is Revolutionizing Astrology',
-      excerpt: 'A deep dive into how machine learning is enhancing birth chart precision and predictive accuracy.',
-      author: 'Tech Guru',
+      title: 'The Hidden Meaning of Your Life Path Number',
+      category: 'Numerology',
       date: 'May 08, 2026',
-      category: 'Future Tech',
-      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=600'
-    }
+      author: 'Guru Raghav',
+      image: 'https://images.unsplash.com/photo-1515549832467-d3b6926228b3?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      title: 'Setting Up Your Home Vastu for Positive Energy',
+      category: 'Vastu',
+      date: 'May 05, 2026',
+      author: 'Sonalika Ved',
+      image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&q=80&w=800'
+    },
+    {
+      title: 'Understanding Tarot: The Fool Card Explained',
+      category: 'Tarot',
+      date: 'May 01, 2026',
+      author: 'Maanya Gupta',
+      image: 'https://images.unsplash.com/photo-1590074072786-a66914d668f1?auto=format&fit=crop&q=80&w=800'
+    },
   ];
 
   return (
-    <div className="min-h-screen pt-32 pb-20 px-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-20">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 bg-accent/5 px-4 py-1.5 rounded-full border border-accent/10 mb-6"
+    <main className="bg-light min-h-screen pb-20">
+      {/* Search & Categories Hero */}
+      <section className="bg-secondary text-white py-24 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-6xl md:text-8xl font-black mb-12"
           >
-            <Sparkles className="w-4 h-4 text-accent" />
-            <span className="text-[10px] font-black text-accent uppercase tracking-widest">Cosmic Insights</span>
-          </motion.div>
-          <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
-             <div className="max-w-3xl">
-                <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-none">
-                  The <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent via-orange-400 to-amber-500">Astro Journal</span>
-                </h1>
-                <p className="text-gray-400 text-xl font-medium max-w-xl">Deep dives into celestial patterns, expert wisdom, and your spiritual growth roadmap.</p>
-             </div>
-             <div className="relative group w-full lg:w-96">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 group-focus-within:text-accent" />
-                <input type="text" placeholder="Search the archives..." className="w-full bg-white/5 border border-white/5 rounded-[24px] py-5 pl-16 pr-6 text-sm text-white focus:outline-none focus:border-accent/40" />
-             </div>
+            Astro <span className="text-primary italic">Insights</span>
+          </motion.h1>
+          
+          <div className="max-w-2xl mx-auto relative group">
+            <input 
+              type="text" 
+              placeholder="Search for wisdom, stars, or destiny..." 
+              className="w-full bg-white/10 border border-white/20 rounded-[2rem] px-10 py-6 outline-none focus:bg-white focus:text-secondary transition-all font-bold text-lg placeholder:text-white/50 focus:placeholder:text-gray-400"
+            />
+            <Search className="absolute right-8 top-1/2 -translate-y-1/2 text-white/50 group-focus-within:text-secondary" size={24} />
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-4 mt-12">
+            {['All', 'Astrology', 'Numerology', 'Tarot', 'Vastu', 'Lifestyle'].map((cat, i) => (
+              <button 
+                key={cat}
+                className={`px-8 py-3 rounded-full font-black text-xs uppercase tracking-widest border transition-all ${i === 0 ? 'bg-primary border-primary text-secondary shadow-lg shadow-primary/20' : 'border-white/20 hover:border-primary text-white/70 hover:text-primary'}`}
+              >
+                {cat}
+              </button>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Featured Post */}
-        {!isLoading && (
-           <motion.div 
-             initial={{ opacity: 0, y: 30 }}
-             animate={{ opacity: 1, y: 0 }}
-             className="glass-card rounded-[48px] border-white/5 overflow-hidden mb-24 group cursor-pointer"
-           >
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                 <div className="h-96 lg:h-auto overflow-hidden">
-                    <img src={posts[0].image} alt="Featured" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                 </div>
-                 <div className="p-12 lg:p-20 flex flex-col justify-center">
-                    <span className="text-[10px] font-black text-accent uppercase tracking-[0.3em] mb-6">{posts[0].category}</span>
-                    <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight group-hover:text-accent transition-colors">{posts[0].title}</h2>
-                    <p className="text-gray-400 text-lg font-medium leading-relaxed mb-10">{posts[0].excerpt}</p>
-                    <div className="flex items-center justify-between">
-                       <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10" />
-                          <div>
-                             <p className="text-white font-bold">{posts[0].author}</p>
-                             <p className="text-gray-600 text-xs font-black uppercase tracking-widest">{posts[0].date}</p>
-                          </div>
-                       </div>
-                       <button className="w-12 h-12 rounded-2xl bg-accent text-white flex items-center justify-center group-hover:scale-110 transition-transform">
-                          <ArrowRight className="w-6 h-6" />
-                       </button>
-                    </div>
-                 </div>
+      {/* Featured Post */}
+      <section className="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-[4rem] overflow-hidden flex flex-col lg:flex-row premium-shadow border border-gray-50 group cursor-pointer"
+        >
+          <div className="lg:w-1/2 h-[400px] lg:h-auto relative overflow-hidden">
+            <img 
+              src="https://images.unsplash.com/photo-1506318137071-a8e063b4bc04?auto=format&fit=crop&q=80&w=1200" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+              alt="Featured" 
+            />
+            <div className="absolute top-8 left-8 bg-primary text-secondary px-6 py-2 rounded-full font-black text-xs uppercase tracking-widest">
+              Featured Story
+            </div>
+          </div>
+          <div className="lg:w-1/2 p-12 md:p-20 flex flex-col justify-center space-y-8">
+            <div className="flex items-center gap-6 text-gray-400 font-bold text-sm">
+              <span className="flex items-center gap-2"><Calendar size={16} /> May 11, 2026</span>
+              <span className="flex items-center gap-2"><User size={16} /> By Dr. Aditya Sharma</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-black text-secondary leading-tight">
+              Solar Eclipse 2026: A Karmic Turning Point for All Signs
+            </h2>
+            <p className="text-gray-500 text-lg leading-relaxed">
+              The upcoming total solar eclipse is not just a celestial event; it's a massive energetic shift that will redefine how we perceive our personal goals...
+            </p>
+            <button className="flex items-center gap-3 text-accent font-black text-lg group-hover:gap-5 transition-all">
+              Continue Reading <ArrowRight size={24} />
+            </button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Blog Grid */}
+      <section className="max-w-7xl mx-auto px-4 py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          {posts.map((post, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              whileHover={{ y: -10 }}
+              className="bg-white rounded-[3rem] overflow-hidden premium-shadow group border border-gray-50 cursor-pointer"
+            >
+              <div className="h-64 relative overflow-hidden">
+                <img src={post.image} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={post.title} />
+                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm text-secondary px-4 py-1 rounded-full font-black text-[10px] uppercase tracking-widest shadow-lg">
+                  {post.category}
+                </div>
               </div>
-           </motion.div>
-        )}
-
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-           {isLoading ? (
-             Array.from({ length: 6 }).map((_, i) => (
-               <div key={i} className="glass-card p-6 rounded-[40px] border-white/5 space-y-4">
-                  <Skeleton height={240} />
-                  <Skeleton height={28} width="90%" />
-                  <Skeleton height={60} width="100%" />
-               </div>
-             ))
-           ) : (
-             posts.slice(1).concat(posts).map((post, idx) => (
-               <motion.div
-                 key={idx}
-                 initial={{ opacity: 0, y: 20 }}
-                 whileInView={{ opacity: 1, y: 0 }}
-                 viewport={{ once: true }}
-                 whileHover={{ y: -10 }}
-                 className="glass-card rounded-[40px] border-white/5 overflow-hidden flex flex-col group cursor-pointer"
-               >
-                  <div className="h-60 relative overflow-hidden">
-                     <img src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                     <div className="absolute top-6 left-6">
-                        <span className="px-4 py-1.5 bg-black/40 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-white border border-white/10">{post.category}</span>
-                     </div>
-                     <button className="absolute top-6 right-6 w-10 h-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white hover:text-accent transition-colors">
-                        <Bookmark className="w-4 h-4" />
-                     </button>
+              <div className="p-8 space-y-4">
+                <div className="flex items-center justify-between text-[10px] text-gray-400 font-black uppercase tracking-widest">
+                  <span className="flex items-center gap-1"><Calendar size={12} /> {post.date}</span>
+                  <span className="flex items-center gap-1"><User size={12} /> {post.author}</span>
+                </div>
+                <h3 className="text-2xl font-black text-secondary leading-snug group-hover:text-accent transition-colors">
+                  {post.title}
+                </h3>
+                <p className="text-gray-500 text-sm line-clamp-2 font-medium">
+                  Explore the deep mystical connections between the stars and your daily life in our latest spiritual guide.
+                </p>
+                <div className="pt-4 border-t border-gray-50 flex justify-between items-center">
+                  <span className="text-accent font-black text-sm">Read More</span>
+                  <div className="w-10 h-10 bg-light rounded-full flex items-center justify-center text-secondary group-hover:bg-primary transition-all">
+                    <ArrowRight size={18} />
                   </div>
-                  <div className="p-8 flex-1 flex flex-col">
-                     <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-accent transition-colors leading-tight">{post.title}</h3>
-                     <p className="text-gray-500 text-sm font-medium mb-8 line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                     <div className="mt-auto flex items-center justify-between pt-6 border-t border-white/5">
-                        <div className="flex items-center gap-3">
-                           <Calendar className="w-4 h-4 text-gray-600" />
-                           <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">{post.date}</span>
-                        </div>
-                        <span className="text-accent font-black text-[10px] uppercase tracking-widest flex items-center gap-2">Read More <ArrowRight className="w-4 h-4" /></span>
-                     </div>
-                  </div>
-               </motion.div>
-             ))
-           )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </div>
-    </div>
+
+        <div className="mt-20 flex justify-center">
+          <button className="bg-secondary text-white px-12 py-5 rounded-3xl font-black text-lg hover:bg-accent transition-all shadow-xl shadow-secondary/20 active:scale-95 flex items-center gap-3">
+            Load More Insights
+            <BookOpen size={22} />
+          </button>
+        </div>
+      </section>
+    </main>
   );
 };
 

@@ -1,204 +1,148 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Search, MessageCircle, Sparkles, HelpCircle } from 'lucide-react';
-import Skeleton from '../components/Skeleton';
+import { HelpCircle, Plus, Minus, Search, MessageCircle, ArrowRight, Star } from 'lucide-react';
 
-const FAQS = [
-  {
-    category: 'Getting Started',
-    questions: [
-      {
-        q: 'What is AstroBless?',
-        a: 'AstroBless is a premium spiritual guidance platform that connects users with expert astrologers, provides AI-driven cosmic insights, and offers educational resources through the AstroBless Academy.'
-      },
-      {
-        q: 'How do I book a consultation?',
-        a: 'Simply browse our list of verified experts, check their availability, and click on "Chat" or "Call" to start an instant session. You need to have sufficient balance in your AstroBless wallet.'
-      },
-      {
-        q: 'Are the astrologers verified?',
-        a: 'Yes, every astrologer undergoes a rigorous 5-stage verification process, including background checks, knowledge testing, and trial consultations before joining our platform.'
-      }
-    ]
-  },
-  {
-    category: 'Wallet & Payments',
-    questions: [
-      {
-        q: 'How do I add money to my wallet?',
-        a: 'Go to your Wallet section, select "Add Money", choose your preferred amount and payment method (UPI, Cards, Net Banking). The balance is updated instantly.'
-      },
-      {
-        q: 'Can I get a refund if I\'m not satisfied?',
-        a: 'We offer refunds in cases of technical issues during a session. Please report the issue within 24 hours through our Support section for a review.'
-      }
-    ]
-  },
-  {
-    category: 'Privacy & Security',
-    questions: [
-      {
-        q: 'Is my consultation private?',
-        a: 'Absolutely. All chats and calls are end-to-end encrypted. We never share your personal birth details or consultation history with third parties.'
-      },
-      {
-        q: 'What is Incognito Mode?',
-        a: 'Incognito Mode allows you to consult with astrologers without revealing your profile identity, ensuring maximum privacy for sensitive queries.'
-      }
-    ]
-  }
-];
+const FAQ = () => {
+  const [activeIndex, setActiveIndex] = useState<number | null>(0);
 
-const FAQPage: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [openIndex, setOpenIndex] = useState<string | null>('0-0');
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const toggleAccordion = (id: string) => {
-    setOpenIndex(openIndex === id ? null : id);
-  };
+  const faqs = [
+    {
+      q: 'How accurate are the online Kundli predictions?',
+      a: 'Our online Kundli reports are generated based on precise Vedic calculations and time-tested astrological principles. While no prediction can be 100% certain, our algorithms are refined by expert astrologers to ensure the highest degree of accuracy based on the birth details provided.'
+    },
+    {
+      q: 'Is my personal information and birth data secure?',
+      a: 'Absolutely. Data privacy is our top priority. All your personal details and birth data are encrypted and used only to generate your reports. We never share your information with any third parties without your explicit consent.'
+    },
+    {
+      q: 'How can I connect with a live astrologer for a private session?',
+      a: 'You can connect with our experts via the "Chat" or "Call" options available on their profiles. For live sessions, simply join an active stream and click on the "Connect Privately" button to start a one-on-one consultation.'
+    },
+    {
+      q: 'What should I do if my birth time is not accurate?',
+      a: 'If you are unsure about your exact birth time, we recommend consulting our experts for "Birth Time Rectification." Alternatively, you can use an approximate time, but please note that this may slightly affect the accuracy of specific predictions.'
+    },
+    {
+      q: 'Are there any hidden charges for the services?',
+      a: 'We maintain complete transparency in our pricing. All charges for premium reports and consultations are clearly mentioned upfront. Free services like Daily Horoscope and basic Kundli generation are truly free with no hidden costs.'
+    },
+    {
+      q: 'How do I get my first consultation for free?',
+      a: 'As a special offer for new users, your first 5-minute consultation with select astrologers is completely free. Look for the "First Chat FREE" tag on astrologer profiles to avail this offer.'
+    }
+  ];
 
   return (
-    <div className="min-h-screen pt-32 pb-20 px-6">
-      <div className="max-w-4xl mx-auto">
-        <header className="mb-16 text-center">
+    <main className="bg-light min-h-screen pb-20">
+      {/* Search Hero */}
+      <section className="bg-secondary text-white py-24 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl -mr-48 -mt-48"></div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 bg-accent/5 px-4 py-1.5 rounded-full border border-accent/10 mb-6"
+            className="w-20 h-20 bg-primary rounded-[2rem] flex items-center justify-center text-secondary mb-8 mx-auto shadow-xl shadow-primary/20"
           >
-            <HelpCircle className="w-4 h-4 text-accent" />
-            <span className="text-[10px] font-black text-accent uppercase tracking-widest">Knowledge Base</span>
+            <HelpCircle size={40} />
           </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tighter"
-          >
-            Frequently Asked <span className="text-accent">Questions</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-gray-400 text-xl font-medium max-w-2xl mx-auto"
-          >
-            Find answers to common queries about our celestial services and platform features.
-          </motion.p>
-        </header>
-
-        {/* Search Bar */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="relative mb-16"
-        >
-          <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
-            <Search className="w-5 h-5 text-gray-500" />
+          <h1 className="text-5xl md:text-7xl font-black mb-8">How can we <span className="text-primary italic">help?</span></h1>
+          
+          <div className="max-w-2xl mx-auto relative group">
+            <input 
+              type="text" 
+              placeholder="Search for questions (e.g. privacy, matching, payments)" 
+              className="w-full bg-white/10 border border-white/20 rounded-[2rem] px-10 py-6 outline-none focus:bg-white focus:text-secondary transition-all font-bold text-lg placeholder:text-white/40 focus:placeholder:text-gray-400"
+            />
+            <Search className="absolute right-8 top-1/2 -translate-y-1/2 text-white/50 group-focus-within:text-secondary" size={24} />
           </div>
-          <input
-            type="text"
-            placeholder="Search for answers..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white/5 border border-white/5 rounded-3xl py-6 pl-16 pr-6 text-white text-lg placeholder:text-gray-600 focus:border-accent/40 focus:ring-0 transition-all font-bold"
-          />
-        </motion.div>
+        </div>
+      </section>
 
-        {loading ? (
-          <div className="space-y-8">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="space-y-4">
-                <Skeleton width={150} height={20} className="mb-4" />
-                <Skeleton height={80} className="rounded-[30px]" />
-                <Skeleton height={80} className="rounded-[30px]" />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-12">
-            {FAQS.map((category, catIdx) => (
-              <div key={catIdx}>
-                <h2 className="text-[10px] font-black text-gray-500 uppercase tracking-[0.4em] mb-6 px-6">
-                  {category.category}
-                </h2>
-                <div className="space-y-4">
-                  {category.questions
-                    .filter(q => q.q.toLowerCase().includes(searchQuery.toLowerCase()) || q.a.toLowerCase().includes(searchQuery.toLowerCase()))
-                    .map((item, qIdx) => {
-                      const id = `${catIdx}-${qIdx}`;
-                      const isOpen = openIndex === id;
-                      return (
-                        <motion.div
-                          key={qIdx}
-                          layout
-                          className="glass-card rounded-[30px] border-white/5 overflow-hidden"
-                        >
-                          <button
-                            onClick={() => toggleAccordion(id)}
-                            className="w-full p-6 md:p-8 flex items-center justify-between text-left group"
-                          >
-                            <span className={`text-lg font-bold transition-colors ${isOpen ? 'text-accent' : 'text-white'}`}>
-                              {item.q}
-                            </span>
-                            <motion.div
-                              animate={{ rotate: isOpen ? 180 : 0 }}
-                              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${isOpen ? 'bg-accent text-white' : 'bg-white/5 text-gray-500 group-hover:text-white'}`}
-                            >
-                              <ChevronDown className="w-5 h-5" />
-                            </motion.div>
-                          </button>
-                          <AnimatePresence>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: 'auto', opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.3, ease: 'easeInOut' }}
-                              >
-                                <div className="px-8 pb-8 text-gray-400 font-medium leading-relaxed border-t border-white/5 pt-6">
-                                  {item.a}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </motion.div>
-                      );
-                    })}
+      {/* Accordion Content */}
+      <section className="max-w-4xl mx-auto px-4 py-20">
+        <div className="space-y-6">
+          {faqs.map((faq, i) => (
+            <motion.div 
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className={`bg-white rounded-[2.5rem] overflow-hidden premium-shadow border-2 transition-all ${activeIndex === i ? 'border-primary' : 'border-transparent'}`}
+            >
+              <button 
+                onClick={() => setActiveIndex(activeIndex === i ? null : i)}
+                className="w-full px-8 md:px-12 py-8 flex items-center justify-between text-left group"
+              >
+                <span className={`text-xl font-black transition-colors ${activeIndex === i ? 'text-secondary' : 'text-secondary/70 group-hover:text-secondary'}`}>
+                  {faq.q}
+                </span>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeIndex === i ? 'bg-secondary text-white' : 'bg-light text-secondary group-hover:bg-primary'}`}>
+                  {activeIndex === i ? <Minus size={20} /> : <Plus size={20} />}
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+              </button>
+              
+              <AnimatePresence>
+                {activeIndex === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="px-8 md:px-12 pb-12 text-gray-500 font-medium text-lg leading-relaxed border-t border-gray-50 pt-8 mx-8 md:mx-12">
+                      {faq.a}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
 
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-20 glass-card p-10 rounded-[40px] border-accent/10 bg-accent/5 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden group"
-        >
-          <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:scale-125 transition-transform duration-700">
-             <Sparkles className="w-32 h-32 text-accent" />
+        {/* Support CTA */}
+        <div className="mt-20 bg-accent rounded-[4rem] p-12 md:p-16 text-white text-center premium-shadow relative overflow-hidden group">
+           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
+           
+           <h3 className="text-3xl md:text-4xl font-black mb-6">Still have questions?</h3>
+           <p className="text-white/70 font-bold text-lg max-w-xl mx-auto mb-10">
+             Our support team is available 24/7 to assist you with any technical or astrological queries you might have.
+           </p>
+           
+           <div className="flex flex-wrap justify-center gap-4">
+             <button className="bg-white text-secondary px-10 py-5 rounded-2xl font-black text-lg hover:bg-primary transition-all shadow-xl active:scale-95 flex items-center gap-3">
+               <MessageCircle size={22} />
+               Chat with Support
+             </button>
+             <button className="bg-white/10 border border-white/20 px-10 py-5 rounded-2xl font-black text-lg hover:bg-white/20 transition-all active:scale-95 flex items-center gap-3 backdrop-blur-sm">
+               Email Us <ArrowRight size={22} />
+             </button>
+           </div>
+        </div>
+      </section>
+
+      {/* Ratings Section */}
+      <section className="py-12 border-t border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+          <div className="text-center md:text-left">
+            <p className="text-gray-400 font-black text-xs uppercase tracking-[0.3em] mb-2">Platform Trust</p>
+            <div className="flex gap-1 text-primary">
+              {[1, 2, 3, 4, 5].map(s => <Star key={s} size={24} fill="currentColor" />)}
+            </div>
           </div>
-          <div className="relative z-10">
-            <h3 className="text-2xl font-black text-white mb-2 tracking-tight">Still have questions?</h3>
-            <p className="text-gray-400 font-medium">Our spiritual concierge is here to help you 24/7.</p>
+          <div className="text-center">
+            <h4 className="text-4xl font-black text-secondary">4.9/5</h4>
+            <p className="text-gray-400 font-bold text-sm">Average User Rating</p>
           </div>
-          <button className="btn-accent px-10 py-4 rounded-2xl flex items-center gap-3 relative z-10">
-            <MessageCircle className="w-5 h-5" />
-            <span className="uppercase tracking-widest text-xs font-black">Contact Support</span>
-          </button>
-        </motion.div>
-      </div>
-    </div>
+          <div className="w-px h-12 bg-gray-200 hidden md:block"></div>
+          <div className="text-center">
+            <h4 className="text-4xl font-black text-secondary">10M+</h4>
+            <p className="text-gray-400 font-bold text-sm">Happy Consultations</p>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 };
 
-export default FAQPage;
+export default FAQ;
