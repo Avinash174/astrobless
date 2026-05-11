@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Moon, Star, Sun, Calendar, ArrowRight, Sparkles } from 'lucide-react';
+import { Moon, Star, Sun, ArrowRight, Sparkles } from 'lucide-react';
 
 const Horoscope = () => {
   const zodiacs = [

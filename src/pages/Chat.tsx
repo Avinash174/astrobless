@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { MessageCircle, Search, Star, ShieldCheck, Filter, ArrowRight, User } from 'lucide-react';
 

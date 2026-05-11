@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const SplashScreen = ({ finishLoading }: { finishLoading: () => void }) => {
   useEffect(() => {

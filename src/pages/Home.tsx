@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay, EffectFade } from 'swiper/modules';
@@ -10,7 +9,6 @@ import {
   Calendar, 
   Compass, 
   Users, 
-  Play, 
   Layout,
   ArrowRight,
   Phone,

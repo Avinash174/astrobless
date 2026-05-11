@@ -1,7 +1,6 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Star, ShieldCheck, CheckCircle2, MessageCircle } from 'lucide-react';
+import { ShieldCheck, CheckCircle2 } from 'lucide-react';
 
 const Youtube = (props: any) => (
   <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

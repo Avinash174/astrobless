@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { BookOpen, Search, ArrowRight, Calendar, User, Tag } from 'lucide-react';
+import { BookOpen, Search, ArrowRight, Calendar, User } from 'lucide-react';
 
 const Blog = () => {
   const posts = [

@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { FileText, Star, Compass, ShieldCheck, ArrowRight, CheckCircle2, Sparkles, MessageCircle } from 'lucide-react';
+import { FileText, Compass, ShieldCheck, ArrowRight, CheckCircle2, Sparkles, MessageCircle } from 'lucide-react';
 
 const Numerology = () => {
   return (

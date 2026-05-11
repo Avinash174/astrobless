@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Layout, Calendar, Clock, MapPin, ArrowRight, ShieldCheck, FileText } from 'lucide-react';
 
